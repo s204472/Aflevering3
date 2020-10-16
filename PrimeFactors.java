@@ -2,7 +2,6 @@ import java.util.Scanner;
 
 public class PrimeFactors{
     public static void main(String[] args){
-        
         boolean exit = false;
         while (!exit){
             long number = getInput();
@@ -28,7 +27,7 @@ public class PrimeFactors{
         long i = 2;
         boolean firstRun = true;
 
-        while(i < number / 2){
+        while(i <= Math.sqrt(number)){
             if(number % i == 0 && isPrime(i)){
                 return i;
             }
@@ -37,7 +36,6 @@ public class PrimeFactors{
                 i--;
                 firstRun = false;
             }
-            
         }
         return number;
     }
@@ -75,6 +73,4 @@ public class PrimeFactors{
 			}
 		}
     }
-
-
 }
