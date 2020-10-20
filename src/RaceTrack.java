@@ -3,7 +3,10 @@ import java.awt.geom.Line2D;
 
 public class RaceTrack {
 	public static final double SQUARE_SIZE = 0.5;
-	public static final int MAP_SIZE = 20;
+	public static final int MAP_SIZE = 50;
+	public static final int Q_MAP = MAP_SIZE / 4;
+	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
+	public static final int HALF_MAP = MAP_SIZE / 2;
 	
 
 	public static void main(String[] args) {
@@ -11,13 +14,13 @@ public class RaceTrack {
 		StdDraw.setPenRadius(2.0 / 1000);
 		StdDraw.setXscale(0, MAP_SIZE);
 		StdDraw.setYscale(0, MAP_SIZE);
-		drawMap(MAP_SIZE, MAP_SIZE);
+		drawMap();
 		
 		int[] carPos = new int[2];
 		int[] lastMove = new int[2];
 		
-		carPos[0] = MAP_SIZE / 2;
-		carPos[1] = MAP_SIZE - MAP_SIZE / 4 + 3;
+		carPos[0] = HALF_MAP;
+		carPos[1] = THREEQ_MAP + Q_MAP/2;
 		
 		lastMove[0] = 0;
 		lastMove[1] = 0; 
@@ -48,7 +51,6 @@ public class RaceTrack {
 				System.out.println("Gameover");
 			}
 			win = checkWin(carPos, lastCarPos, win); 
-			System.out.println(win[0] + "" + win[1]);
 			if (win[0]) {
 				gameover = true;
 				System.out.println("You won");
@@ -60,11 +62,11 @@ public class RaceTrack {
 		
 	}
 
-	public static void drawMap(int sizeX, int sizeY) {
+	public static void drawMap() {
 
-		for (int i = 0; i < sizeX; i++) {
-			for (int j = 0; j < sizeY; j++) {
-				if (!(i >= sizeX / 4 && i < sizeX - sizeX / 4 && j >= sizeY / 4 && j < sizeY - sizeY / 4)) {
+		for (int i = 0; i < MAP_SIZE; i++) {
+			for (int j = 0; j < MAP_SIZE; j++) {
+				if (!(i >= Q_MAP && i < THREEQ_MAP && j >= Q_MAP && j < THREEQ_MAP)) {
 					StdDraw.setPenColor(StdDraw.GRAY);
 					StdDraw.filledSquare(i + SQUARE_SIZE, j + SQUARE_SIZE, SQUARE_SIZE);
 					StdDraw.setPenColor(StdDraw.BLACK);
@@ -75,8 +77,7 @@ public class RaceTrack {
 		}
 		StdDraw.setPenRadius(5.0 / 1000);
 		StdDraw.setPenColor(StdDraw.GREEN);
-		StdDraw.line(sizeX/2, sizeY, sizeX/2, sizeY - sizeY / 4);
-		StdDraw.line(sizeX/2 - 1, sizeY, sizeX/2 - 1, sizeY - sizeY / 4);
+		StdDraw.line(HALF_MAP, MAP_SIZE, HALF_MAP, THREEQ_MAP);
 	}
 	
 	public static int getMove() {
@@ -129,10 +130,10 @@ public class RaceTrack {
 			return true;
 		} 	
 		Line2D move = new Line2D.Float(lastCarPos[0], lastCarPos[1], carPos[0], carPos[1]);
-		Line2D line1 = new Line2D.Float(5, 15, 15, 15);
-		Line2D line2 = new Line2D.Float(5, 5, 15, 5);
-		Line2D line3 = new Line2D.Float(5, 5, 5, 15);
-		Line2D line4 = new Line2D.Float(15, 5, 15, 15);
+		Line2D line1 = new Line2D.Float(Q_MAP, THREEQ_MAP, THREEQ_MAP, THREEQ_MAP);
+		Line2D line2 = new Line2D.Float(Q_MAP, Q_MAP, THREEQ_MAP, Q_MAP);
+		Line2D line3 = new Line2D.Float(Q_MAP, Q_MAP, Q_MAP, THREEQ_MAP);
+		Line2D line4 = new Line2D.Float(THREEQ_MAP, Q_MAP, THREEQ_MAP, THREEQ_MAP);
 		
 		if(move.intersectsLine(line1) || move.intersectsLine(line2) || move.intersectsLine(line3) || move.intersectsLine(line4)) {
 			return true;
@@ -143,7 +144,7 @@ public class RaceTrack {
 	
 	public static boolean[] checkWin (int[] carPos, int[] lastCarPos, boolean[] win) {
 		Line2D move = new Line2D.Float(lastCarPos[0], lastCarPos[1], carPos[0], carPos[1]);
-		Line2D winLine = new Line2D.Float(MAP_SIZE/2 - 1, MAP_SIZE, MAP_SIZE/2 - 1, MAP_SIZE - MAP_SIZE / 4);
+		Line2D winLine = new Line2D.Float(HALF_MAP, MAP_SIZE, HALF_MAP, THREEQ_MAP);
 		
 		if(move.intersectsLine(winLine)) {
 			if (carPos[0] - lastCarPos[0] < 0) {
@@ -152,7 +153,7 @@ public class RaceTrack {
 			} else if (carPos[0] - lastCarPos[0] > 0 && !win[1]) {
 				win[1] = true;
 				return win;
-			} else if (carPos[0] - lastCarPos[0] > 0 && win[1] && lastCarPos[0] != MAP_SIZE/2 - 1) {
+			} else if (carPos[0] - lastCarPos[0] > 0 && win[1] && lastCarPos[0] != HALF_MAP) {
 				win[0] = true;
 				return win;
 			}
