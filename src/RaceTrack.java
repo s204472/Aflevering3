@@ -26,9 +26,13 @@ public class RaceTrack {
 		StdDraw.setPenColor(StdDraw.RED);
 		StdDraw.filledCircle(carPos[0], carPos[1], 0.3);
 		boolean gameover = false;
+		boolean[] win = {false, true};
+		
+		int moveCounter = 0;
 		
 		while(!gameover) {
 			int nextMove = getMove();
+			moveCounter ++;
 			int[] lastCarPos = {carPos[0], carPos[1]};
 
 			carPos = getNewPos(carPos, lastMove, nextMove);
@@ -39,9 +43,19 @@ public class RaceTrack {
 			StdDraw.filledCircle(carPos[0], carPos[1], 0.3);
 			StdDraw.setPenColor(StdDraw.BLACK);
 			StdDraw.line(lastCarPos[0], lastCarPos[1], carPos[0], carPos[1]);
-			gameover = checkCrash(carPos, lastCarPos);
+			if (checkCrash(carPos, lastCarPos)) {
+				gameover = true;
+				System.out.println("Gameover");
+			}
+			win = checkWin(carPos, lastCarPos, win); 
+			System.out.println(win[0] + "" + win[1]);
+			if (win[0]) {
+				gameover = true;
+				System.out.println("You won");
+				System.out.println("You made " + moveCounter);
+			}
+			
 		}
-		System.out.println("Gameover");
 		
 		
 	}
@@ -62,6 +76,7 @@ public class RaceTrack {
 		StdDraw.setPenRadius(5.0 / 1000);
 		StdDraw.setPenColor(StdDraw.GREEN);
 		StdDraw.line(sizeX/2, sizeY, sizeX/2, sizeY - sizeY / 4);
+		StdDraw.line(sizeX/2 - 1, sizeY, sizeX/2 - 1, sizeY - sizeY / 4);
 	}
 	
 	public static int getMove() {
@@ -126,5 +141,23 @@ public class RaceTrack {
 		return false;
 	}
 	
+	public static boolean[] checkWin (int[] carPos, int[] lastCarPos, boolean[] win) {
+		Line2D move = new Line2D.Float(lastCarPos[0], lastCarPos[1], carPos[0], carPos[1]);
+		Line2D winLine = new Line2D.Float(MAP_SIZE/2 - 1, MAP_SIZE, MAP_SIZE/2 - 1, MAP_SIZE - MAP_SIZE / 4);
+		
+		if(move.intersectsLine(winLine)) {
+			if (carPos[0] - lastCarPos[0] < 0) {
+				win[1] = false;
+				return win;
+			} else if (carPos[0] - lastCarPos[0] > 0 && !win[1]) {
+				win[1] = true;
+				return win;
+			} else if (carPos[0] - lastCarPos[0] > 0 && win[1] && lastCarPos[0] != MAP_SIZE/2 - 1) {
+				win[0] = true;
+				return win;
+			}
+		} 
+		return win;
+	}
 	
 }
