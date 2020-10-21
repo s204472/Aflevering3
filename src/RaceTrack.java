@@ -9,7 +9,6 @@ public class RaceTrack {
 	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
 	public static final int HALF_MAP = MAP_SIZE / 2;
 	
-	
 
 	public static void main(String[] args) {
 		StdDraw.setCanvasSize(800, 800);
@@ -19,63 +18,53 @@ public class RaceTrack {
 		drawMap();
 		int carCount  = getPlayers();
 		
-		int[][] carPos = new int[carCount][2];
-		int[][] lastMove = new int[carCount][2];
-		boolean[][] win = new boolean[carCount][2];
-		int[][] lastCarPos = new int [carCount][2];
+		Car[] cars = new Car[carCount];
 		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE };
 		
-		for(int i = 0; i < carPos.length; i++) {
-			carPos[i][0] = HALF_MAP;
-			carPos[i][1] = THREEQ_MAP + Q_MAP/2;
-		
-			lastMove[i][0] = 0;
-			lastMove[i][1] = 0;
-			
-			win[i][0] = false;
-			win[i][1] = true;
-			
-			StdDraw.setPenColor(StdDraw.RED);
-			StdDraw.filledCircle(carPos[i][0], carPos[i][1], 0.3);			
+		for (int i = 0; i < carCount; i++) {
+			cars[i] = new Car(HALF_MAP, THREEQ_MAP + Q_MAP / 2 + i, carColor[i]);
+			StdDraw.setPenColor(cars[i].color);
+			StdDraw.filledCircle(cars[i].carPos[0], cars[i].carPos[1], 0.3);	
 		}
-		
-		boolean gameover = false;
-		
+
+		boolean gameover = false;		
 		 
-		int moveCounter = 0;
+
+		StdDraw.setPenColor(StdDraw.RED);
 		
 		while(!gameover) {
-			for(int i = 0; i < carPos.length; i++) {
+			for(int i = 0; i < carCount; i++) {
 				int nextMove = getMove(i);
-				moveCounter++;
-				lastCarPos[i][0] = carPos[i][0];
-				lastCarPos[i][1] = carPos[i][1];
+				cars[i].moveCounter++;
+				cars[i].lastCarPos[0] = cars[i].carPos[0];
+				cars[i].lastCarPos[1] = cars[i].carPos[1];
 
-				carPos[i] = getNewPos(carPos[i], lastMove[i], nextMove);
-				lastMove[i][0] = carPos[i][0] - lastCarPos[i][0];
-				lastMove[i][1] = carPos[i][1] - lastCarPos[i][1];
+				cars[i].carPos = getNewPos(cars[i].carPos, cars[i].lastMove, nextMove);
+				cars[i].lastMove[0] = cars[i].carPos[0] - cars[i].lastCarPos[0];
+				cars[i].lastMove[1] = cars[i].carPos[1] - cars[i].lastCarPos[1];
 
+				StdDraw.setPenColor(cars[i].color);
+				StdDraw.filledCircle(cars[i].carPos[0], cars[i].carPos[1], 0.3);		
+				StdDraw.line(cars[i].lastCarPos[0], cars[i].lastCarPos[1], cars[i].carPos[0], cars[i].carPos[1]);
 				
-				StdDraw.setPenColor(carColor[i]);
-				StdDraw.filledCircle(carPos[i][0], carPos[i][1], 0.3);
-				StdDraw.setPenColor(StdDraw.BLACK);
-				StdDraw.line(lastCarPos[i][0], lastCarPos[i][1], carPos[i][0], carPos[i][1]);
-				if (checkCrash(carPos[i], lastCarPos[i])) {
+				if (checkCrash(cars[i].carPos, cars[i].lastCarPos)) {
 					gameover = true;
 					System.out.println("Gameover");
+					break;
 				}
-				win[i] = checkWin(carPos[i], lastCarPos[i], win[i]);
-				if (win[i][0]) {
+				cars[i].win = checkWin(cars[i].carPos, cars[i].lastCarPos, cars[i].win);
+				
+				if (cars[i].win[0]) {
 					gameover = true;
 					System.out.println("You won");
-					System.out.println("You made " + moveCounter);
+					System.out.println("Player " + (i + 1) + " won in " + cars[i].moveCounter + " moves");
+					break;
 				}
 			}	
 		}
 	}
 
 	public static void drawMap() {
-
 		for (int i = 0; i < MAP_SIZE; i++) {
 			for (int j = 0; j < MAP_SIZE; j++) {
 				if (!(i >= Q_MAP && i < THREEQ_MAP && j >= Q_MAP && j < THREEQ_MAP)) {
@@ -91,6 +80,7 @@ public class RaceTrack {
 		StdDraw.setPenColor(StdDraw.GREEN);
 		StdDraw.line(HALF_MAP, MAP_SIZE, HALF_MAP, THREEQ_MAP);
 	}
+	
 	public static int getPlayers() {
     	Scanner input = new Scanner(System.in);
 		int num = 0; 
@@ -126,6 +116,7 @@ public class RaceTrack {
 			}
 		}
     }
+	
 	public static int[] getNewPos(int[] carPos, int[] lastMove, int nextMove) {
 		int newXmove = 0;
 		int newYmove = 0;
