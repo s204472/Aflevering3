@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.awt.geom.Line2D;
+import java.awt.Color;
 
 public class RaceTrack {
 	public static final double SQUARE_SIZE = 0.5;
@@ -7,7 +8,7 @@ public class RaceTrack {
 	public static final int Q_MAP = MAP_SIZE / 4;
 	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
 	public static final int HALF_MAP = MAP_SIZE / 2;
-	public static final int CAR_COUNT = 2;
+	
 	
 
 	public static void main(String[] args) {
@@ -16,11 +17,13 @@ public class RaceTrack {
 		StdDraw.setXscale(0, MAP_SIZE);
 		StdDraw.setYscale(0, MAP_SIZE);
 		drawMap();
+		int carCount  = getPlayers();
 		
-		int[][] carPos = new int[CAR_COUNT][2];
-		int[][] lastMove = new int[CAR_COUNT][2];
-		boolean[][] win = new boolean[CAR_COUNT][2];
-		int[][] lastCarPos = new int [CAR_COUNT][2];
+		int[][] carPos = new int[carCount][2];
+		int[][] lastMove = new int[carCount][2];
+		boolean[][] win = new boolean[carCount][2];
+		int[][] lastCarPos = new int [carCount][2];
+		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE };
 		
 		for(int i = 0; i < carPos.length; i++) {
 			carPos[i][0] = HALF_MAP;
@@ -43,7 +46,7 @@ public class RaceTrack {
 		
 		while(!gameover) {
 			for(int i = 0; i < carPos.length; i++) {
-				int nextMove = getMove();
+				int nextMove = getMove(i);
 				moveCounter++;
 				lastCarPos[i][0] = carPos[i][0];
 				lastCarPos[i][1] = carPos[i][1];
@@ -52,7 +55,8 @@ public class RaceTrack {
 				lastMove[i][0] = carPos[i][0] - lastCarPos[i][0];
 				lastMove[i][1] = carPos[i][1] - lastCarPos[i][1];
 
-				StdDraw.setPenColor(StdDraw.RED);
+				
+				StdDraw.setPenColor(carColor[i]);
 				StdDraw.filledCircle(carPos[i][0], carPos[i][1], 0.3);
 				StdDraw.setPenColor(StdDraw.BLACK);
 				StdDraw.line(lastCarPos[i][0], lastCarPos[i][1], carPos[i][0], carPos[i][1]);
@@ -66,11 +70,8 @@ public class RaceTrack {
 					System.out.println("You won");
 					System.out.println("You made " + moveCounter);
 				}
-			}
-			
+			}	
 		}
-		
-		
 	}
 
 	public static void drawMap() {
@@ -90,11 +91,28 @@ public class RaceTrack {
 		StdDraw.setPenColor(StdDraw.GREEN);
 		StdDraw.line(HALF_MAP, MAP_SIZE, HALF_MAP, THREEQ_MAP);
 	}
-	
-	public static int getMove() {
+	public static int getPlayers() {
     	Scanner input = new Scanner(System.in);
 		int num = 0; 
-		System.out.print("Enter move: ");
+		System.out.print("Enter number of players (max 5): ");
+		while(true){
+			while (!input.hasNextInt()){
+				input.next();
+				System.out.println("Wrong input, try again");
+			}
+			num = input.nextInt();
+			if (num > 0 && num < 6) {
+				return num;
+			} else {
+				System.out.println("Wrong input, try again");
+			}
+		}
+    }
+	
+	public static int getMove(int playerNum) {
+    	Scanner input = new Scanner(System.in);
+		int num = 0; 
+		System.out.print("Player " + (playerNum + 1) + " move: ");
 		while(true){
 			while (!input.hasNextInt()){
 				input.next();
@@ -173,3 +191,5 @@ public class RaceTrack {
 	}
 	
 }
+
+
