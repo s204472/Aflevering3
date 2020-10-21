@@ -57,20 +57,20 @@ public class PrimeFactors{
     }
 
     public static long getInput() {
-    	Scanner input = new Scanner(System.in);
-		long num = 0; 
-		System.out.print("Enter integer greater than 1 (0 to terminate): ");
-		while(true){
-			while (!input.hasNextLong()){
-				input.next();
-				System.out.println("Wrong input, try again");
-			}
-			num = input.nextLong();
-			if (num > 1 || num == 0) {
-				return num;
-			} else {
-				System.out.println("Wrong input, try again");
-			}
-		}
+        Scanner input = new Scanner(System.in);
+        long num = 0;
+        try {
+            System.out.print("Enter integer greater than 1 (0 to terminate): ");
+            num = input.nextLong();
+            if (num > 1 || num == 0) {
+                return num;
+            } else {
+                System.out.println("Wrong input, try again");
+                return getInput();
+            }
+        } catch (Exception e) {
+            System.out.println("Wrong input, try again");
+            return getInput();
+        }
     }
 }

@@ -36,21 +36,21 @@ public class RandomWalk {
 	}
 	
 	public static int getInput() {
-    	Scanner input = new Scanner(System.in);
-		int num = 0; 
-		System.out.print("Enter size of grid: ");
-		while(true){
-			while (!input.hasNextInt()){
-				input.next();
-				System.out.println("Wrong input, try again");
-			}
-			num = input.nextInt();
-			if (num > 1 || num == 0) {
-				return num;
-			} else {
-				System.out.println("Wrong input, try again");
-			}
-		}
+        Scanner input = new Scanner(System.in);
+        int num = 0;
+        try {
+            System.out.print("Enter size of grid: ");
+            num = input.nextInt();
+            if (num > 1) {
+                return num;
+            } else {
+                System.out.println("Wrong input, try again");
+                return getInput();
+            }
+        } catch (Exception e) {
+            System.out.println("Wrong input, try again");
+            return getInput();
+        }
     }
 
 }

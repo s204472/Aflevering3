@@ -82,7 +82,7 @@ public class RaceTrack {
 	}
 	
 	public static int getPlayers() {
-    	Scanner input = new Scanner(System.in);
+    	/*Scanner input = new Scanner(System.in);
 		int num = 0; 
 		System.out.print("Enter number of players (max 5): ");
 		while(true){
@@ -96,25 +96,47 @@ public class RaceTrack {
 			} else {
 				System.out.println("Wrong input, try again");
 			}
-		}
+		}*/
+		
+		
+        Scanner input = new Scanner(System.in);
+        int num = 0;
+        try {
+            System.out.print("Enter number of players (max 5): ");
+            num = input.nextInt();
+            if (num > 0 && num < 6) {
+                return num;
+            } else {
+                System.out.println("Wrong input, try again");
+                return getPlayers();
+            }
+        } catch (Exception e) {
+            System.out.println("Wrong input, try again");
+            return getPlayers();
+        }
+	    
     }
 	
 	public static int getMove(int playerNum) {
-    	Scanner input = new Scanner(System.in);
-		int num = 0; 
-		System.out.print("Player " + (playerNum + 1) + " move: ");
-		while(true){
-			while (!input.hasNextInt()){
-				input.next();
-				System.out.println("Wrong input, try again");
-			}
-			num = input.nextInt();
-			if (num > 0 && num < 10) {
-				return num;
-			} else {
-				System.out.println("Wrong input, try again");
-			}
-		}
+		Scanner input = new Scanner(System.in);
+        int num = 0;
+        try {
+            System.out.print("Player " + (playerNum + 1) + " move: ");
+            num = input.nextInt();
+            if (num > 0 && num < 10) {
+                return num;
+            } else {
+                System.out.println("Wrong input, try again");
+                return getMove(playerNum);
+            }
+        } catch (Exception e) {
+            System.out.println("Wrong input, try again");
+            return getMove(playerNum);
+        }
+		
+		
+		
+		
     }
 	
 	public static int[] getNewPos(int[] carPos, int[] lastMove, int nextMove) {
