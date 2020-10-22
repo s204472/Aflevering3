@@ -4,11 +4,11 @@ import java.awt.Color;
 
 public class RaceTrack {
 	public static final double SQUARE_SIZE = 0.5;
-	public static final int MAP_SIZE = 20;
+	public static final int MAP_SIZE = 100;
 	public static final int Q_MAP = MAP_SIZE / 4;
 	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
 	public static final int HALF_MAP = MAP_SIZE / 2;
-	public static final int MAX_PLAYERS = 4;
+	public static final int MAX_PLAYERS = 8;
 
 	public static void main(String[] args) {
 		StdDraw.setCanvasSize(800, 800);
@@ -19,10 +19,10 @@ public class RaceTrack {
 		int carCount  = getPlayers();
 		
 		Car[] cars = new Car[carCount];
-		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE };
+		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW };
 		
 		for (int i = 0; i < carCount; i++) {
-			cars[i] = new Car(HALF_MAP, THREEQ_MAP + Q_MAP / 2 + i - 1, carColor[i]);
+			cars[i] = new Car(HALF_MAP, THREEQ_MAP + Q_MAP / 2 + i - 1, carColor[i % carColor.length]);
 			StdDraw.setPenColor(cars[i].color);
 			StdDraw.filledCircle(cars[i].carPos[0], cars[i].carPos[1], 0.3);	
 		}
