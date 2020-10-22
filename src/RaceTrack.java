@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class RaceTrack {
 	public static final double SQUARE_SIZE = 0.5;
-	public static final int MAP_SIZE = 50;
+	public static final int MAP_SIZE = 20;
 	public static final int Q_MAP = MAP_SIZE / 4;
 	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
 	public static final int HALF_MAP = MAP_SIZE / 2;
@@ -22,7 +22,7 @@ public class RaceTrack {
 		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE };
 		
 		for (int i = 0; i < carCount; i++) {
-			cars[i] = new Car(HALF_MAP, THREEQ_MAP + Q_MAP / 2 + i, carColor[i]);
+			cars[i] = new Car(HALF_MAP, THREEQ_MAP + Q_MAP / 2 + i - 1, carColor[i]);
 			StdDraw.setPenColor(cars[i].color);
 			StdDraw.filledCircle(cars[i].carPos[0], cars[i].carPos[1], 0.3);	
 		}
@@ -82,29 +82,12 @@ public class RaceTrack {
 	}
 	
 	public static int getPlayers() {
-    	/*Scanner input = new Scanner(System.in);
-		int num = 0; 
-		System.out.print("Enter number of players (max 5): ");
-		while(true){
-			while (!input.hasNextInt()){
-				input.next();
-				System.out.println("Wrong input, try again");
-			}
-			num = input.nextInt();
-			if (num > 0 && num < 6) {
-				return num;
-			} else {
-				System.out.println("Wrong input, try again");
-			}
-		}*/
-		
-		
         Scanner input = new Scanner(System.in);
         int num = 0;
         try {
-            System.out.print("Enter number of players (max 5): ");
+            System.out.print("Enter number of players (max 4): ");
             num = input.nextInt();
-            if (num > 0 && num < 6) {
+            if (num > 0 && num < 5) {
                 return num;
             } else {
                 System.out.println("Wrong input, try again");
