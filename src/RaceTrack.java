@@ -4,11 +4,11 @@ import java.awt.Color;
 
 public class RaceTrack {
 	public static final double SQUARE_SIZE = 0.5;
-	public static final int MAP_SIZE = 100;
+	public static final int MAP_SIZE = 20;
 	public static final int Q_MAP = MAP_SIZE / 4;
 	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
 	public static final int HALF_MAP = MAP_SIZE / 2;
-	public static final int MAX_PLAYERS = 8;
+	public static final int MAX_PLAYERS = 4;
 
 	public static void main(String[] args) {
 		StdDraw.setCanvasSize(800, 800);
