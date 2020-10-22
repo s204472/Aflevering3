@@ -8,7 +8,7 @@ public class RaceTrack {
 	public static final int Q_MAP = MAP_SIZE / 4;
 	public static final int THREEQ_MAP = MAP_SIZE - MAP_SIZE / 4;
 	public static final int HALF_MAP = MAP_SIZE / 2;
-	
+	public static final int MAX_PLAYERS = 4;
 
 	public static void main(String[] args) {
 		StdDraw.setCanvasSize(800, 800);
@@ -19,7 +19,7 @@ public class RaceTrack {
 		int carCount  = getPlayers();
 		
 		Car[] cars = new Car[carCount];
-		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE };
+		Color[] carColor = { Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE, Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.ORANGE };
 		
 		for (int i = 0; i < carCount; i++) {
 			cars[i] = new Car(HALF_MAP, THREEQ_MAP + Q_MAP / 2 + i - 1, carColor[i]);
@@ -56,7 +56,6 @@ public class RaceTrack {
 				
 				if (cars[i].win[0]) {
 					gameover = true;
-					System.out.println("You won");
 					System.out.println("Player " + (i + 1) + " won in " + cars[i].moveCounter + " moves");
 					break;
 				}
@@ -85,9 +84,9 @@ public class RaceTrack {
         Scanner input = new Scanner(System.in);
         int num = 0;
         try {
-            System.out.print("Enter number of players (max 4): ");
+            System.out.print("Enter number of players (max " + MAX_PLAYERS + "): ");
             num = input.nextInt();
-            if (num > 0 && num < 5) {
+            if (num > 0 && num < MAX_PLAYERS + 1) {
                 return num;
             } else {
                 System.out.println("Wrong input, try again");
