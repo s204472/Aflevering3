@@ -1,5 +1,9 @@
 import java.awt.Color;
 
+/*
+ * This is the Car class. It stores information about each Car object.
+ * All Car attributes are initialized, and whenever a Car object is create the constructor is run.
+ * */
 public class Car {
 	int[] carPos = new int[2];
     int[] lastMove = new int[2]; 

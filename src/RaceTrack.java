@@ -10,6 +10,12 @@ public class RaceTrack {
 	public static final int HALF_MAP = MAP_SIZE / 2;
 	public static final int MAX_PLAYERS = 4;
 
+	
+	/*
+	 * This is the main method. The game is initialized from this method.
+	 * Variables is set, functions like getPlayers, and drawMap is called.
+	 * The gameloop is then entered.
+	 * */
 	public static void main(String[] args) {
 		StdDraw.setCanvasSize(800, 800);
 		StdDraw.setPenRadius(2.0 / 1000);
@@ -32,6 +38,8 @@ public class RaceTrack {
 
 		StdDraw.setPenColor(StdDraw.RED);
 		
+		
+		// This is the gameloop. The loop runs until a crash or a player has won.
 		while(!gameover) {
 			for(int i = 0; i < carCount; i++) {
 				int nextMove = getMove(i);
@@ -63,6 +71,9 @@ public class RaceTrack {
 		}
 	}
 
+	/*
+	 * This method draws the game map. It is done using nested for loops, running from 0, to MAP_SIZE.
+	 * */
 	public static void drawMap() {
 		for (int i = 0; i < MAP_SIZE; i++) {
 			for (int j = 0; j < MAP_SIZE; j++) {
@@ -80,6 +91,12 @@ public class RaceTrack {
 		StdDraw.line(HALF_MAP, MAP_SIZE, HALF_MAP, THREEQ_MAP);
 	}
 	
+	
+	/* 
+     * This method prompts the user for the amount of players the game should be played with. 
+     * The method handles wrong inputs, by using the try-catch-block and if-statements.
+     * The method returns an int, between 1, and MAX_PLAYERS
+     * */
 	public static int getPlayers() {
         Scanner input = new Scanner(System.in);
         int num = 0;
@@ -99,6 +116,11 @@ public class RaceTrack {
 	    
     }
 	
+	/* 
+     * This method prompts the user to enter the car's next move. 
+     * The method handles wrong inputs, by using the try-catch-block and if-statements.
+     * The method returns an int, between 1, and 9
+     * */
 	public static int getMove(int playerNum) {
 		Scanner input = new Scanner(System.in);
         int num = 0;
@@ -121,6 +143,10 @@ public class RaceTrack {
 		
     }
 	
+	/*
+	 * This method translates the userinput from 1-9, to car movements.
+	 * The new car position is returned as a int array of x,y.
+	 * */
 	public static int[] getNewPos(int[] carPos, int[] lastMove, int nextMove) {
 		int newXmove = 0;
 		int newYmove = 0;
@@ -147,7 +173,10 @@ public class RaceTrack {
 	}
 	
 	
-	
+	/*
+	 * This method is run everytime a car moves. It checks whether the car has crashed.
+	 * The method returns true if car has crashed. False is returned otherwise.
+	 * */
 	public static boolean checkCrash(int[] carPos, int[] lastCarPos) {
 		if (carPos[0] < 0 || carPos[0] > MAP_SIZE || 
 				carPos[1] < 0 || carPos[1] > MAP_SIZE) {
@@ -166,6 +195,10 @@ public class RaceTrack {
 		return false;
 	}
 	
+	/*
+	 * This method is run everytime a car moves. It checks whether the car has crossed the win-line.
+	 * It handles players crossing, the line from the wrong side as well. 
+	 * */
 	public static boolean[] checkWin (int[] carPos, int[] lastCarPos, boolean[] win) {
 		Line2D move = new Line2D.Float(lastCarPos[0], lastCarPos[1], carPos[0], carPos[1]);
 		Line2D winLine = new Line2D.Float(HALF_MAP, MAP_SIZE, HALF_MAP, THREEQ_MAP);

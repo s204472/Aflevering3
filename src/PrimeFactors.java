@@ -23,6 +23,10 @@ public class PrimeFactors{
         }    
     }
 
+    /*
+     * This method finds the smallest prime factor of a number.
+     * The smallest prime factor is returned
+     * */
     public static long findSmallestPrime(long number){
         long i = 2;
         boolean firstRun = true;
@@ -40,6 +44,10 @@ public class PrimeFactors{
         return number;
     }
 
+	/*
+	 * This method checks whether a number is a primenumber or not.
+	 * True is returned if prime.
+	 * */
     public static boolean isPrime(long number){
         long i = 2;
         boolean firstRun = true;
@@ -56,6 +64,10 @@ public class PrimeFactors{
         return true;
     }
 
+    /* 
+     * This method prompts the user for an input. 
+     * The method handles wrong inputs, by using the try-catch-block and if-statements.
+     * */
     public static long getInput() {
         Scanner input = new Scanner(System.in);
         long num = 0;
